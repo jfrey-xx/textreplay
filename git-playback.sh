@@ -248,7 +248,7 @@ read_diff() {
 }
 
 rm -f $output_file
-echo $htmlStart >> $output_file
+echo "$htmlStart" >> $output_file
 write_start_revision
 foreach_git_revision write_revision
-echo $htmlEnd >> $output_file
+echo "$htmlEnd" >> $output_file
