@@ -153,7 +153,7 @@ write_code_closing_tag() {
 
 write_file() {
   if [ -f $1 ]; then
-    eval "$(cat $1 >> $output_file)"
+    eval "$(sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g' $1 >> $output_file)"
   fi
 }
 
@@ -161,7 +161,7 @@ write_diff() {
   if [ -f $1 ]; then
     line_count="$(git diff --unified=999999 HEAD~1 $1 | grep '[^ ]' | wc -l)"
     if [ $line_count -eq 0 ]; then
-      eval "$(cat $1 >> $output_file)"
+      eval "$(sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g' $1 >> $output_file)"
     else
       eval "$(git diff --unified=999999 HEAD~1 $1 | read_diff >> $output_file)"
     fi
@@ -236,10 +236,10 @@ read_diff() {
     if [[ "$class" == 'none' ]]; then
       class='none'
     elif [[ "$class" ]]; then
-      echo -E '<div class="'${class}'">'${s}
+      echo -E '<div class="'${class}'">' `echo "${s}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'`
       echo -e '</div>\c'
     else
-      echo -E $s
+      echo -E $s | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'
     fi
     read -r s
   done
