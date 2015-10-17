@@ -25,6 +25,19 @@ get_root_commit() {
   git rev-list --max-parents=0 HEAD 2>/dev/null | tr -d \*
 }
 
+# retrieve base path of script -- http://stackoverflow.com/a/630645
+prg=$0
+if [ ! -e "$prg" ]; then
+  case $prg in
+    (*/*) exit 1;;
+    (*) prg=$(command -v -- "$prg") || exit;;
+  esac
+fi
+dir=$(
+  cd -P -- "$(dirname -- "$prg")" && pwd -P
+) || exit
+printf '%s\n' "$dir"
+
 files=()
 output_folder='playback'
 output_file="$output_folder/error" # should be replaced by hash afterward
@@ -124,6 +137,7 @@ write_start_revision() {
     for file in ${files[@]}
     do
       write_file $file
+      post_hook $output_file
     done
   fi
 
@@ -139,7 +153,16 @@ write_revision() {
     do
       write_diff $file
       write_change_count $file
+      post_hook $output_file
     done
+  fi
+}
+
+post_hook() {
+  if [ -f $1 ]; then
+    # doingthe hard stuff
+    echo "converting $1 to html..."
+    cat $1 | sh ${dir}/ansi2html.sh > $1.html 
   fi
 }
 
