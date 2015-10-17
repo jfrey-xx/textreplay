@@ -25,18 +25,6 @@ get_root_commit() {
   git rev-list --max-parents=0 HEAD 2>/dev/null | tr -d \*
 }
 
-# retrieve base path of script -- http://stackoverflow.com/a/630645
-prg=$0
-if [ ! -e "$prg" ]; then
-  case $prg in
-    (*/*) exit 1;;
-    (*) prg=$(command -v -- "$prg") || exit;;
-  esac
-fi
-dir=$(
-  cd -P -- "$(dirname -- "$prg")" && pwd -P
-) || exit
-
 files=()
 output_folder='textreplay_playback_output'
 output_file="$output_folder/error" # should be replaced by hash afterward
@@ -64,6 +52,8 @@ while [ -h "$source_file" ]; do
 done
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd -P "$(dirname "$source_file")" && pwd)"
 unset source_file
+
+css_file="${script_dir}/textreplay.css"
 
 fetch_number_commits() {
   echo `git rev-list HEAD --count`
@@ -172,7 +162,7 @@ post_hook() {
   if [ -f $1 ]; then
     # doingthe hard stuff
     echo "converting $1 to html..."
-    cat $1 | sh ${dir}/ansi2html.sh > $1.html 
+    cat $1 | sh ${script_dir}/ansi2html.sh > $1.html 
   fi
 }
 
@@ -180,5 +170,6 @@ total_commits=`fetch_number_commits`
 
 rm -rf $output_folder
 mkdir $output_folder
+cp ${css_file} ${output_folder}
 write_start_revision
 foreach_git_revision write_revision
