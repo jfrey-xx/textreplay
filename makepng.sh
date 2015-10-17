@@ -5,7 +5,7 @@ while IFS='' read -r line ;  do
     echo "Converting hash: $line --> ${num}.png"
     if [ -s  ${line} ] ; then
        i=$((i+1))
-       cutycapt --url=file://$(pwd)/${line}.html --out=${num}.png 
+       cutycapt --min-width=7680 --min-height=4320 --url=file://$(pwd)/${line}.html --out=${num}.png 
     else
         echo "empty file, skip."
     fi ;
