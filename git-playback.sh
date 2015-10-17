@@ -92,6 +92,12 @@ write_diff() {
   fi
 }
 
+write_change_count() {
+  if [ -f $1 ]; then
+      eval "$(git diff --numstat HEAD~1 $1 >> $output_file)"
+  fi
+}
+
 write_commit_message() {
   if $message; then
     eval "$(git log -1 --pretty=format:'<span>%h</span><span>: </span><span class="keyword">%s</span>' --abbrev-commit >> $output_file)"
@@ -118,6 +124,7 @@ write_revision() {
     for file in ${files[@]}
     do
       write_diff $file
+      write_change_count $file
     done
   fi
 }
@@ -153,7 +160,5 @@ read_diff() {
 }
 
 rm -f $output_file
-echo "$htmlStart" >> $output_file
 write_start_revision
 foreach_git_revision write_revision
-echo "$htmlEnd" >> $output_file
