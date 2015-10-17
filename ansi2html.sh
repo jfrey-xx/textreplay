@@ -65,10 +65,10 @@ fi
 printf '%s' "<html>
 <head>
 <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
-<link rel=\"stylesheet\" type=\"text/css\" href=\"textreplay.css\">
+<link rel=\"stylesheet\" type=\"text/css\" href=\"textreplay.css\"/>
 </head>
 
-<body class="f9 b9">
+<body class=\"f9 b9\">
 <pre>
 "
 
