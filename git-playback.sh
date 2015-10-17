@@ -36,10 +36,9 @@ fi
 dir=$(
   cd -P -- "$(dirname -- "$prg")" && pwd -P
 ) || exit
-printf '%s\n' "$dir"
 
 files=()
-output_folder='playback'
+output_folder='textreplay_playback_output'
 output_file="$output_folder/error" # should be replaced by hash afterward
 output_hash="$output_folder/hash.csv"
 output_date="$output_folder/date.csv"
@@ -47,6 +46,7 @@ output_change="$output_folder/change.csv"
 output_message="$output_folder/message.xml"
 start_revision=`get_root_commit`
 end_revision=`get_git_branch`
+total_commits=0
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -64,6 +64,10 @@ while [ -h "$source_file" ]; do
 done
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd -P "$(dirname "$source_file")" && pwd)"
 unset source_file
+
+fetch_number_commits() {
+  echo `git rev-list HEAD --count`
+}
 
 foreach_git_revision() {
   command=$1
@@ -128,9 +132,10 @@ write_commit_message() {
 }
 
 write_start_revision() {
+  echo "Total number of commits: $total_commits"
   git checkout --quiet $start_revision
-
   if has_files; then
+    pre_hook $output_file
     write_hash
     write_commit_message
     write_date
@@ -146,6 +151,7 @@ write_start_revision() {
 
 write_revision() {
   if has_files; then
+    pre_hook $output_file
     write_hash
     write_commit_message
     write_date
@@ -158,6 +164,10 @@ write_revision() {
   fi
 }
 
+pre_hook() {
+  echo "commit `fetch_number_commits` / $total_commits"
+}
+
 post_hook() {
   if [ -f $1 ]; then
     # doingthe hard stuff
@@ -166,7 +176,9 @@ post_hook() {
   fi
 }
 
-#rm -rf $output_folder
+total_commits=`fetch_number_commits`
+
+rm -rf $output_folder
 mkdir $output_folder
 write_start_revision
 foreach_git_revision write_revision
