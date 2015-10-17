@@ -98,6 +98,13 @@ write_change_count() {
   fi
 }
 
+write_date() {
+  # get author date of current commit
+  if [ -f $1 ]; then
+      eval "$(git show -s --format='%ai' >> $output_file)"
+  fi
+}
+
 write_commit_message() {
   if $message; then
     eval "$(git log -1 --pretty=format:'<span>%h</span><span>: </span><span class="keyword">%s</span>' --abbrev-commit >> $output_file)"
@@ -109,6 +116,7 @@ write_start_revision() {
 
   if has_files; then
     write_commit_message
+    write_date
     for file in ${files[@]}
     do
       write_file $file
@@ -121,6 +129,7 @@ write_start_revision() {
 write_revision() {
   if has_files; then
     write_commit_message
+    write_date
     for file in ${files[@]}
     do
       write_diff $file
