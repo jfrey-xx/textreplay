@@ -88,7 +88,7 @@ write_file() {
 
 write_diff() {
   if [ -f $1 ]; then
-      git diff --unified=999999 HEAD~1 $1 >> $output_file
+      eval "$(git diff --unified=999999 HEAD~1 $1 | read_diff >> $output_file)"
   fi
 }
 
