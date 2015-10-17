@@ -14,7 +14,6 @@ Use left and right arrows to navigate the output.
 h,help        show the help
 s,start=      specify start revision. Default: root commit
 e,end=        specify end revision. Default: current branch
-n,no-message  don't output commit message
 "
 eval "$(echo "$OPTS_SPEC" | git rev-parse --parseopt -- "$@" || echo exit $?)"
 
@@ -35,7 +34,6 @@ output_change="$output_folder/change.csv"
 output_message="$output_folder/message.xml"
 start_revision=`get_root_commit`
 end_revision=`get_git_branch`
-message=true
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -43,14 +41,9 @@ while [ $# -gt 0 ]; do
   case "$opt" in
     -s) start_revision="$1"; shift;;
     -e) end_revision="$1"; shift;;
-    -t) style="$1"; shift;;
-    -n) message=false ;;
     *) files+=("$1") ;;
   esac
 done
-
-
-
 
 source_file="${BASH_SOURCE[0]}"
 while [ -h "$source_file" ]; do
@@ -58,7 +51,6 @@ while [ -h "$source_file" ]; do
 done
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd -P "$(dirname "$source_file")" && pwd)"
 unset source_file
-
 
 foreach_git_revision() {
   command=$1
@@ -93,7 +85,8 @@ write_file() {
 
 write_diff() {
   if [ -f $1 ]; then
-      eval "$(git diff --unified=999999 HEAD~1 $1 | read_diff >> $output_file)"
+      # remove first 4 lines, git diff header
+      eval "$(git diff --color-words --unified=999999 HEAD~1 $1 | tail -n +6 > $output_file)"
   fi
 }
 
@@ -118,9 +111,7 @@ write_hash() {
 }
 
 write_commit_message() {
-  if $message; then
     eval "$(git log -1 --pretty=format:'<mess>%s</mess>' --abbrev-commit >> $output_message)"
-  fi
 }
 
 write_start_revision() {
@@ -150,36 +141,6 @@ write_revision() {
       write_change_count $file
     done
   fi
-}
-
-read_diff() {
-  OIFS=$IFS
-  IFS=''
-
-  read -r s
-
-  while [[ $? -eq 0 ]]
-  do
-    if [[ $s == diff*  ]] ||
-       [[ $s == +++*   ]] ||
-       [[ $s == ---*   ]] ||
-       [[ $s == @@*    ]] ||
-       [[ $s == index* ]]; then
-      class='none'
-   else
-      s=${s# }
-      class=
-    fi
-
-    if [[ "$class" == 'none' ]]; then
-      class='none'
-   else
-      echo -E $s 
-    fi
-    read -r s
-  done
-
-  IFS=$OIFS
 }
 
 #rm -rf $output_folder
