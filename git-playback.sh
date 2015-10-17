@@ -27,7 +27,12 @@ get_root_commit() {
 }
 
 files=()
-output_file='playback.html'
+output_folder='playback'
+output_file="$output_folder/error" # should be replaced by hash afterward
+output_hash="$output_folder/hash.csv"
+output_date="$output_folder/date.csv"
+output_change="$output_folder/change.csv"
+output_message="$output_folder/message.xml"
 start_revision=`get_root_commit`
 end_revision=`get_git_branch`
 message=true
@@ -94,20 +99,27 @@ write_diff() {
 
 write_change_count() {
   if [ -f $1 ]; then
-      eval "$(git diff --numstat HEAD~1 $1 >> $output_file)"
+      eval "$(git diff --numstat HEAD~1 $1 >> $output_change)"
   fi
 }
 
 write_date() {
   # get author date of current commit
   if [ -f $1 ]; then
-      eval "$(git show -s --format='%ai' >> $output_file)"
+      eval "$(git show -s --format='%ai' >> $output_date)"
   fi
+}
+
+write_hash() {
+    # update also output filename
+    cur_hash=`eval "git log --pretty=format:'%Hh' -n 1"`
+    output_file=$output_folder/$cur_hash
+    echo $cur_hash >> $output_hash
 }
 
 write_commit_message() {
   if $message; then
-    eval "$(git log -1 --pretty=format:'<span>%h</span><span>: </span><span class="keyword">%s</span>' --abbrev-commit >> $output_file)"
+    eval "$(git log -1 --pretty=format:'<mess>%s</mess>' --abbrev-commit >> $output_message)"
   fi
 }
 
@@ -115,6 +127,7 @@ write_start_revision() {
   git checkout --quiet $start_revision
 
   if has_files; then
+    write_hash
     write_commit_message
     write_date
     for file in ${files[@]}
@@ -128,6 +141,7 @@ write_start_revision() {
 
 write_revision() {
   if has_files; then
+    write_hash
     write_commit_message
     write_date
     for file in ${files[@]}
@@ -168,6 +182,7 @@ read_diff() {
   IFS=$OIFS
 }
 
-rm -f $output_file
+#rm -rf $output_folder
+mkdir $output_folder
 write_start_revision
 foreach_git_revision write_revision
