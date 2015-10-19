@@ -112,8 +112,10 @@ get_deleted_chars() {
 write_diff() {
   if [ -f $1 ]; then
        git diff 
-      # remove first 4 lines, git diff header
-      eval "$(git diff --color-words --patience --unified=999999 HEAD~1 $1 | tail -n +6 > $output_file)"
+      # remove first 4 lines, git diff header, add custom color and replace escape code of diff with background color
+      # FIXME: breaks other formatting that git could introduce...
+      #eval "$(git diff --color-words --patience --unified=999999 HEAD~1 $1 | tail -n +6 | read_diff |  sed -r "s/\x1B\[m/\x1B\[39m/g" > $output_file)"
+      eval "$(git diff --color-words --patience --unified=999999 HEAD~1 $1 | tail -n +6 | read_diff > $output_file)"
  fi
 }
 
@@ -193,6 +195,48 @@ post_hook() {
     echo "converting $1 to html..."
     cat $1 | sh ${script_dir}/ansi2html.sh > $1.html 
   fi
+}
+
+read_diff() {
+  OIFS=$IFS
+  IFS=''
+  local esc="\e["
+  read -r s
+
+  
+  while [[ $? -eq 0 ]]
+  do
+    # comments, underline 
+    if [[ $s == \#*   ]]; then
+      s=${s#+}
+      class='4'
+    # table, bold 
+    elif [[ $s == \|*   ]]; then
+      s=${s#+}
+      class='1'
+    # title, background red
+    elif [[ $s == \**   ]]; then
+      s=${s#-}
+      class='41'
+    else
+      s=${s# }
+      class=
+    fi
+
+    if [[ "$class" ]]; then
+        # 2nd line: replace git reset with regular color
+        # 3rd line: reset all 
+	echo -E `echo -e "${esc}${class}m"`\
+`echo "${s}"| sed -r "s/\x1B\[m/\x1B\[39m/g"`\
+`echo -e "${esc}m"`
+      #echo -E `echo -e "\e[1m"``echo "${s}"``echo -e "\e[11m"`
+    else
+      echo -E $s 
+    fi
+    read -r s
+  done
+
+  IFS=$OIFS
 }
 
 total_commits=`fetch_number_commits`
