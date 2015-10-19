@@ -7,9 +7,8 @@ if [ $# -eq 0 ]; then
 fi
 
 OPTS_SPEC="\
-git playback file1 file2 ...
+git playback file ...
 
-Use left and right arrows to navigate the output.
 --
 h,help        show the help
 s,start=      specify start revision. Default: root commit
@@ -25,7 +24,7 @@ get_root_commit() {
   git rev-list --max-parents=0 HEAD 2>/dev/null | tr -d \*
 }
 
-files=()
+file=()
 output_folder='textreplay_playback_output'
 output_file="$output_folder/error" # should be replaced by hash afterward
 output_hash="$output_folder/hash.csv"
@@ -42,7 +41,7 @@ while [ $# -gt 0 ]; do
   case "$opt" in
     -s) start_revision="$1"; shift;;
     -e) end_revision="$1"; shift;;
-    *) files+=("$1") ;;
+    *) file+=("$1") ;;
   esac
 done
 
@@ -74,14 +73,16 @@ foreach_git_revision() {
 }
 
 has_files() {
-  for file in ${files[@]}
-  do
-    if [ -f $file ] && [ -s $file ]; then
-      return 0
-    else
-      return 1
-    fi
-  done
+ if [ -f $file ] && [ -s $file ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+has_diff() {
+  git diff HEAD HEAD~1 --exit-code $1 > /dev/null
+  return $(($?==0))
 }
 
 write_file() {
@@ -90,16 +91,42 @@ write_file() {
   fi
 }
 
+get_added_chars() {
+  if [ -f $1 ]; then
+    # got idea from http://stackoverflow.tcom/a/28183710
+    local nbChars=$(git diff --word-diff=porcelain HEAD~1 $1 | grep -e '^+[^+]' | wc -m)
+    # inflation cause of "+" and line ternimation, we wille remove that
+    local nbLines=$(git diff --word-diff=porcelain HEAD~1 $1 | grep -e '^+[^+]' | wc -l)
+    echo $((nbChars-2*nbLines))
+  fi
+}
+
+get_deleted_chars() {
+  if [ -f $1 ]; then
+    local nbChars=$(git diff --word-diff=porcelain HEAD~1 $1 | grep -e '^-[^-]' | wc -m)
+    local nbLines=$(git diff --word-diff=porcelain HEAD~1 $1 | grep -e '^-[^-]' | wc -l)
+    echo $((nbChars-2*nbLines))
+  fi
+}
+
 write_diff() {
   if [ -f $1 ]; then
+       git diff 
       # remove first 4 lines, git diff header
-      eval "$(git diff --color-words --unified=999999 HEAD~1 $1 | tail -n +6 > $output_file)"
-  fi
+      eval "$(git diff --color-words --patience --unified=999999 HEAD~1 $1 | tail -n +6 > $output_file)"
+ fi
 }
 
 write_change_count() {
   if [ -f $1 ]; then
-      eval "$(git diff --numstat HEAD~1 $1 >> $output_change)"
+      echo "$(get_added_chars $1) $(get_deleted_chars $1)" >> $output_change
+  fi
+}
+
+write_change_count_start() {
+  # on init, just output file size
+  if [ -f $1 ]; then
+      echo "$(wc -m < $1) 0" >> $output_change
   fi
 }
 
@@ -118,7 +145,7 @@ write_hash() {
 }
 
 write_commit_message() {
-    eval "$(git log -1 --pretty=format:'<mess>%s</mess>' --abbrev-commit >> $output_message)"
+    eval "$(git log -1 --pretty=format:'<mess>%s</mess>' --abbrev-commit >> $output_message && echo "" >> $output_message)"
 }
 
 write_start_revision() {
@@ -129,28 +156,30 @@ write_start_revision() {
     write_hash
     write_commit_message
     write_date
-    for file in ${files[@]}
-    do
-      write_file $file
-      post_hook $output_file
-    done
+    write_file $file
+    write_change_count_start $file
+    post_hook $output_file
+  else
+      echo "No file at start"
   fi
-
   git reset --hard
 }
 
 write_revision() {
-  if has_files; then
-    pre_hook $output_file
-    write_hash
-    write_commit_message
-    write_date
-    for file in ${files[@]}
-    do
-      write_diff $file
-      write_change_count $file
-      post_hook $output_file
-    done
+   if has_files; then
+     if has_diff $file; then
+       pre_hook $output_file
+       write_hash
+       write_commit_message
+       write_date
+       write_diff $file
+       write_change_count $file
+       post_hook $output_file
+     else
+	 echo "No change"
+     fi
+  else
+       echo "No file at diff"
   fi
 }
 
