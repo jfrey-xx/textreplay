@@ -12,7 +12,6 @@ body {
 .f9 { color: #93a1a1; }
 .b9 { 
   -webkit-column-gap: 5px;
-  word-wrap: break-word;
   -webkit-column-width: 300px;
   font-weight: 900;
 }
@@ -23,5 +22,7 @@ span {
 }
 
 pre {
-    font-family:"Gentium";
+  font-family:"Gentium";
+  white-space: normal;
+  word-wrap: break-word;
 }
