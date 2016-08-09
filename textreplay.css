@@ -16,6 +16,24 @@ body {
   font-weight: 900;
 }
 
+/* comments */
+.underline {
+   font-size: 8px;
+   color: #586e75;
+}
+
+/* tables */
+.bold {
+   font-size: 7px;
+   color: #839496;
+   font-family:"BitStream Vera Sans Mono";
+}
+
+/* titles */
+.b1 {
+   color: #eee8d5;
+}
+
 /* Avoid pixels between adjacent span elements.  */
 span { 
   font-size: 15px;
