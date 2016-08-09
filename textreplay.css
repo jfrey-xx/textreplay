@@ -23,6 +23,6 @@ span {
 
 pre {
   font-family:"Gentium";
-  white-space: normal;
+  white-space: pre-wrap;
   word-wrap: break-word;
 }
