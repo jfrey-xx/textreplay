@@ -14,6 +14,11 @@ body {
   -webkit-column-gap: 5px;
   -webkit-column-width: 300px;
   font-weight: 900;
+
+  /* first fill height */
+  -moz-column-fill: auto;
+  column-fill: auto;
+
 }
 
 /* comments */
