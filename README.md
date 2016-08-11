@@ -1,20 +1,14 @@
-# git-playback
 
-git-playback is a bash script that creates a visual playback of git commits. Use it like this:
+Make a video out of a text versioned with git. Based on [git-playback](https://github.com/mmozuras/git-playback)
 
-    git clone git://github.com/mmozuras/git-playback.git
-    cd /repository/you/want/to/playback
-    sh /path/to/git-playback/git-playback.sh file1 file2
-    open playback.html
+# How-To
 
-Output will be written to playback.html. Use left and right arrows to navigate.
+- ...
+- `makepng.sh hash.csv` 
 
-To see a list of available options run git-playback with --help.
+# Dependencies
 
-# Installing
+- cutycapt
 
-You can also install git-playback to make it work like every other git command. Just run:
+Tested on kubuntu 16.04
 
-    make install
-
-This will make 'git playback' available.
