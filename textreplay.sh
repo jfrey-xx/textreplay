@@ -55,6 +55,8 @@ unset source_file
 css_file="${script_dir}/textreplay.css"
 jquery_file="${script_dir}/jquery.min.js"
 js_file="${script_dir}/centering.js"
+font_gentium_file="${script_dir}/GenBasR.ttf"
+font_vera_file="${script_dir}/VeraMono.ttf"
 
 fetch_number_commits() {
   echo `git rev-list HEAD --count`
@@ -248,5 +250,8 @@ mkdir $output_folder
 cp ${css_file} ${output_folder}
 cp ${jquery_file} ${output_folder}
 cp ${js_file} ${output_folder}
+cp ${font_gentium_file} ${output_folder}
+cp ${font_vera_file} ${output_folder}
+
 write_start_revision
 foreach_git_revision write_revision

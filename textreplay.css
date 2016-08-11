@@ -1,4 +1,14 @@
 
+@font-face {
+  font-family: GentiumBasicR;
+  src: url(GenBasR.ttf);
+}
+
+@font-face {
+  font-family: VeraSansMono;
+  src: url(VeraMono.ttf);
+}
+
 body {
   background-color: #002b36;
   width:7680px;
@@ -32,7 +42,7 @@ body {
 .bold {
    font-size: 6px;
    color: #839496;
-   font-family:"BitStream Vera Sans Mono";
+   font-family: VeraSansMono;
 }
 
 /* titles */
@@ -46,7 +56,7 @@ span {
 }
 
 pre {
-  font-family:"Gentium";
+  font-family: GentiumBasicR;
   white-space: pre-wrap;
   word-wrap: break-word;
 }

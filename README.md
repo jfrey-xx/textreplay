@@ -3,7 +3,8 @@ Make a video out of a text versioned with git. Based on [git-playback](https://g
 
 # How-To
 
-- git-playback.sh PATH_TO_REPO/file
+- cd PATH_TO_REPO
+- textreplay.sh file
 - ...
 - `makepng.sh hash.csv` 
 
