@@ -66,6 +66,8 @@ printf '%s' "<html>
 <head>
 <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
 <link rel=\"stylesheet\" type=\"text/css\" href=\"textreplay.css\"/>
+<script type=\"text/javascript\" src=\"jquery.min.js\"></script>
+<script type=\"text/javascript\" src=\"centering.js\"></script>
 </head>
 
 <body class=\"f9 b9\">

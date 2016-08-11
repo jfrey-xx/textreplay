@@ -4,6 +4,7 @@ body {
   width:7680px;
   height:4320px;
   font-size: 8px;
+  margin: 0;
 }
 
 .f1 { color: #dc322f; } 

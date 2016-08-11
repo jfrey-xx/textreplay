@@ -53,6 +53,8 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd -P "$(dirname "$source_f
 unset source_file
 
 css_file="${script_dir}/textreplay.css"
+jquery_file="${script_dir}/jquery.min.js"
+js_file="${script_dir}/centering.js"
 
 fetch_number_commits() {
   echo `git rev-list HEAD --count`
@@ -244,5 +246,7 @@ total_commits=`fetch_number_commits`
 rm -rf $output_folder
 mkdir $output_folder
 cp ${css_file} ${output_folder}
+cp ${jquery_file} ${output_folder}
+cp ${js_file} ${output_folder}
 write_start_revision
 foreach_git_revision write_revision
