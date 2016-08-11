@@ -3,7 +3,7 @@ body {
   background-color: #002b36;
   width:7680px;
   height:4320px;
-  font-size: 8px;
+  font-size: 7px;
   margin: 0;
 }
 
@@ -13,7 +13,7 @@ body {
 .f9 { color: #93a1a1; }
 .b9 { 
   -webkit-column-gap: 5px;
-  -webkit-column-width: 300px;
+  -webkit-column-width: 260px;
   font-weight: 900;
 
   /* first fill height */
@@ -24,13 +24,13 @@ body {
 
 /* comments */
 .underline {
-   font-size: 8px;
+   font-size: 7px;
    color: #586e75;
 }
 
 /* tables */
 .bold {
-   font-size: 7px;
+   font-size: 6px;
    color: #839496;
    font-family:"BitStream Vera Sans Mono";
 }
@@ -42,7 +42,7 @@ body {
 
 /* Avoid pixels between adjacent span elements.  */
 span { 
-  font-size: 15px;
+  font-size: 10px;
 }
 
 pre {
