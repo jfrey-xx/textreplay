@@ -19,8 +19,16 @@ body {
   margin: 0;
 }
 
-.f1 { color: #dc322f; } 
-.f2 { color: #859900; }
+/* stuff added */
+.f1 {
+  color: #073642; 
+  background-color:  #dc322f;
+} 
+/* stuff removed */
+.f2 {
+  color: #073642; 
+  background-color: #859900;
+}
 
 .f9 { color: #93a1a1; }
 .b9 { 
