@@ -7,6 +7,7 @@ Make a video out of a text versioned with git. Based on [git-playback](https://g
 - textreplay.sh file
 - ...
 - `makepng.sh hash.csv` 
+    - NB: needs a X server running, if launched through ssh use `DISPLAY=:0 makepng.sh hash.csv` 
 
 # Dependencies
 
