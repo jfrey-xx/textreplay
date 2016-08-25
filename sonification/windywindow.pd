@@ -1,22 +1,45 @@
-#N canvas 99 23 443 256 10;
+#N canvas 173 429 723 632 10;
 #X obj -21 66 dac~;
-#X obj -19 -45 hip~ 9000;
 #X obj -19 -92 noise~;
 #X obj -20 2 glasswindow 2007 1994 1986 1969 254 669 443 551 3.7 4.2
 0.61 2.3;
 #X obj -19 -69 dropsig 7.7 0.002 0.1 1;
-#X obj 32 -145 delread~ a;
 #X obj 33 -119 *~ 24;
 #X obj 33 -96 +~ 6;
 #X obj -21 40 *~ 0.35;
 #X obj -20 -23 *~ 20;
-#X connect 1 0 9 0;
-#X connect 2 0 4 0;
-#X connect 3 0 8 0;
-#X connect 4 0 1 0;
-#X connect 5 0 6 0;
-#X connect 6 0 7 0;
-#X connect 7 0 4 1;
-#X connect 8 0 0 0;
-#X connect 8 0 0 1;
-#X connect 9 0 3 0;
+#X obj 135 -291 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 6200 1;
+#X msg 338 -96 10;
+#X obj -19 -45 hip~;
+#X obj 361 -62 pow;
+#X obj 382 -275 * 2;
+#X obj 199 -84 print x1;
+#X obj 341 -132 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 373 -192 -;
+#X msg 355 -217 4;
+#X obj 352 -244 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 1 0 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 10 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 0 0;
+#X connect 6 0 0 1;
+#X connect 7 0 2 0;
+#X connect 8 0 4 0;
+#X connect 8 0 12 0;
+#X connect 8 0 14 0;
+#X connect 9 0 11 0;
+#X connect 10 0 7 0;
+#X connect 11 0 10 1;
+#X connect 12 0 15 1;
+#X connect 12 0 17 0;
+#X connect 14 0 9 0;
+#X connect 15 0 13 0;
+#X connect 15 0 14 0;
+#X connect 15 0 11 1;
+#X connect 16 0 15 0;
+#X connect 17 0 16 0;
