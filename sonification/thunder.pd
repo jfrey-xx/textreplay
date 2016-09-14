@@ -1,4 +1,4 @@
-#N canvas 1610 813 798 494 10;
+#N canvas 1609 813 798 494 10;
 #N canvas 151 81 188 323 afterimage 0;
 #X obj 1 114 noise~;
 #X obj 16 176 noise~;
@@ -39,8 +39,8 @@
 #X restore 248 91 pd afterimage;
 #X obj 156 39 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
 -1;
-#N canvas 263 631 152 190 strike 0;
-#X obj 0 172 outlet~;
+#N canvas 1932 837 465 424 strike 1;
+#X obj -18 279 outlet~;
 #X obj 1 44 route 0 1 2 3;
 #X obj 1 0 inlet;
 #X obj 1 23 strike-pattern;
@@ -48,6 +48,9 @@
 #X obj 22 87 strike-sound;
 #X obj 44 107 strike-sound;
 #X obj 65 126 strike-sound;
+#X obj 52 193 *~ 0.4;
+#X obj 116 209 *~ 0.2;
+#X obj 4 170 *~ 0.6;
 #X connect 1 0 4 0;
 #X connect 1 1 5 0;
 #X connect 1 2 6 0;
@@ -55,9 +58,12 @@
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
 #X connect 4 0 0 0;
-#X connect 5 0 0 0;
-#X connect 6 0 0 0;
-#X connect 7 0 0 0;
+#X connect 5 0 10 0;
+#X connect 6 0 8 0;
+#X connect 7 0 9 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
 #X restore 11 94 pd strike sound;
 #X obj 248 113 *~ 3;
 #X obj 150 169 outlet~;
