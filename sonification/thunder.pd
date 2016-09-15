@@ -1,4 +1,4 @@
-#N canvas 1609 813 798 494 10;
+#N canvas 1608 813 798 494 10;
 #N canvas 151 81 188 323 afterimage 0;
 #X obj 1 114 noise~;
 #X obj 16 176 noise~;
@@ -39,7 +39,7 @@
 #X restore 248 91 pd afterimage;
 #X obj 156 39 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
 -1;
-#N canvas 1932 837 465 424 strike 1;
+#N canvas 1931 837 465 424 strike 0;
 #X obj -18 279 outlet~;
 #X obj 1 44 route 0 1 2 3;
 #X obj 1 0 inlet;
@@ -69,8 +69,8 @@
 #X obj 150 169 outlet~;
 #X obj 155 2 inlet;
 #X connect 0 0 3 0;
-#X connect 1 0 2 0;
 #X connect 1 0 0 0;
+#X connect 1 0 2 0;
 #X connect 2 0 4 0;
 #X connect 3 0 4 0;
 #X connect 5 0 1 0;
