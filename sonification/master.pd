@@ -1,5 +1,5 @@
 #N canvas 816 71 566 610 10;
-#X obj 147 104 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+#X obj 149 99 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
 -1 -1 0 1;
 #X obj 208 422 dac~;
 #X obj 112 260 windywindow;
@@ -7,20 +7,20 @@
 #X obj 229 189 sel 1;
 #X obj 219 165 change;
 #X obj 201 138 > 0.75;
-#X obj 150 325 *~ 0.5;
 #X obj 136 33 inlet;
 #X obj 73 200 min 0.6;
+#X obj 150 325 *~ 2;
 #X obj 107 163 + 0.1;
 #X connect 0 0 6 0;
 #X connect 0 0 10 0;
-#X connect 2 0 7 0;
+#X connect 2 0 9 0;
 #X connect 3 0 1 1;
 #X connect 3 0 1 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X connect 7 0 1 1;
-#X connect 8 0 0 0;
-#X connect 9 0 2 0;
-#X connect 10 0 9 0;
+#X connect 7 0 0 0;
+#X connect 8 0 2 0;
+#X connect 9 0 1 0;
+#X connect 9 0 1 1;
+#X connect 10 0 8 0;
