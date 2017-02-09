@@ -1,11 +1,17 @@
 
 Make a video out of a text versioned with git. Based on [git-playback](https://github.com/mmozuras/git-playback)
 
+# Demo
+
+[![PhD replay](output_example.gif)](https://vimeo.com/jfreyxx/phd-replay)
+
+A real-life example lies here: [https://vimeo.com/jfreyxx/phd-replay](https://vimeo.com/jfreyxx/phd-replay)
+
 # How-To
 
 - cd PATH_TO_REPO
 - textreplay.sh file
-- ... the program redo the history of selected file in the current branch. The output folder is created insiderepo. (NB: the git repo will be headless in a previous state upon crash)
+- ... the program redo the history of selected file in the current branch. The output folder is created inside the repo. (NB: upon crash the git repo will be left headless in a previous state)
 - `makepng.sh hash.csv` 
     - NB: needs a X server running, if launched through ssh use `DISPLAY=:0 makepng.sh hash.csv`
 - `makemp4_big.sh` to create a 4k animation at 30FPS
